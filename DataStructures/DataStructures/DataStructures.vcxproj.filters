@@ -102,5 +102,13 @@
     <ClInclude Include="vertex.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="irow.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

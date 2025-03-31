@@ -10,13 +10,13 @@ namespace data_structures
 	class IArray2D;
 
 	template <class T>
-	class Row final
+	class Row final : public IRow<T>
 	{
 	public:
 		Row(const IArray2D<T>& arr, const int row_index);
-		~Row() = default;
-		T& operator[](const int& column);
-		T operator[](const int& column) const;
+		~Row();
+		auto operator[](const int& column) -> T& override;
+		auto operator[](const int& column) const -> T override;
 
 	private:
 		const IArray2D<T>& arr_;
