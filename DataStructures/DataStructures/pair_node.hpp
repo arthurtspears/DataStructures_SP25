@@ -2,7 +2,6 @@
 #define PAIR_NODE_HPP
 
 #include "node.hpp"
-#include <algorithm>
 
 namespace data_structures
 {
@@ -10,22 +9,24 @@ namespace data_structures
 	class PairNode : public Node<V>
 	{
 	public:
-		PairNode() = delete;
-		K Key() const noexcept;
+		PairNode(const K& key, const V& value);
+
+		PairNode(const PairNode& copy) = default;
+		PairNode(PairNode&& copy) noexcept = default;
+
+		~PairNode() override = default;
+
+		PairNode& operator=(const PairNode& rhs) = default;
+		PairNode& operator=(PairNode&& rhs) noexcept = default;
+
 		K& Key() noexcept;
-		void Key(const K key) noexcept(false);
-		virtual ~PairNode() = 0;
+		const K& Key() const noexcept;
+
+		void Key(const K& key);
 
 	protected:
-		PairNode(const K& key, const V& value) noexcept;
-		PairNode(const PairNode& copy) noexcept;
-		PairNode(PairNode&& copy) noexcept;
-		PairNode& operator=(const PairNode& rhs) noexcept;
-		PairNode& operator=(PairNode&& rhs) noexcept;
-
-		K key_;
+		PairNode() = default;
+		K key_{};
 	};
-
-
 }
 #endif

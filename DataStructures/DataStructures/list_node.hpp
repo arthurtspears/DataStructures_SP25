@@ -6,29 +6,34 @@
 namespace data_structures
 {
 	template <class T>
-	class ListNode : public Node<T>
+	class ListNode final : public Node<T>
 	{
 	public:
 		ListNode() = delete;
-		explicit ListNode(const T& data, ListNode<T>* next = nullptr, ListNode<T>* previous = nullptr);
-		ListNode(const ListNode<T>& copy);
-		ListNode<T>& operator=(const ListNode<T>& rhs);
+		explicit ListNode(const T& data, ListNode* next = nullptr, ListNode* previous = nullptr);
 
-		ListNode(ListNode<T>&& copy) noexcept;
-		ListNode<T>& operator=(ListNode<T>&& rhs) noexcept;
+		ListNode(const ListNode& copy);
+		ListNode& operator=(const ListNode& rhs);
 
-		ListNode<T>* Next() noexcept;
-		ListNode<T>* Next() const noexcept;
-		ListNode<T>* Previous() noexcept;
-		ListNode<T>* Previous() const noexcept;
+		ListNode(ListNode&& copy) noexcept;
+		ListNode& operator=(ListNode&& rhs) noexcept;
 
-		void Next(ListNode<T>* const next) noexcept;
-		void Previous(ListNode<T>* const previous) noexcept;
+		ListNode* Next() noexcept;
+		ListNode* Next() const noexcept;
+		ListNode* Prev() noexcept;
+		ListNode* Prev() const noexcept;
 
-		~ListNode() = default;
+		void Next(ListNode* next) noexcept;
+		void Prev(ListNode* previous) noexcept;
+
+		bool operator==(const ListNode& rhs) const noexcept;
+		bool operator!=(const ListNode& rhs) const noexcept;
+
+		~ListNode() override = default;
+
 	private:
-		ListNode<T>* next_;
-		ListNode<T>* previous_;
+		ListNode* next_{ nullptr };
+		ListNode* prev_{ nullptr };
 	};
 
 }

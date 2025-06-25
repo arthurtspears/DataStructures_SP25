@@ -9,117 +9,58 @@ namespace data_structures
 	class Array final
 	{
 	public:
+		using iterator = T*;
+		using const_iterator = const T*;
+
+		using value_type = T;
+		using reference = T&;
+		using pointer = T*;
+		using difference_type = std::ptrdiff_t;
+
 		explicit Array() = default;
 		~Array();
-		explicit Array(size_t length, int start_index = 0) noexcept(false);
-		explicit Array(const T* storage, const size_t& length, const int& start_index = 0) noexcept(false);
+		explicit Array(size_t length); // can throw exceptions
+		explicit Array(const T* storage, const size_t& length);
 
-		Array(const Array& copy) noexcept(false);
-		Array& operator=(const Array& rhs) noexcept(false);
+		Array(const Array& copy);
+		Array& operator=(const Array& rhs);
 		Array(Array&& copy) noexcept;
 		Array& operator=(Array&& rhs) noexcept;
 
-		T& operator[](const int& index) noexcept(false);
-		T operator[](const int& index) const noexcept(false);
+		T& operator[](const size_t& index);
+		const T& operator[](const size_t& index) const;
+
 		explicit operator bool() const noexcept;
+		bool operator==(const Array& rhs) const noexcept;
+		bool operator!=(const Array& rhs) const noexcept;
 
-		bool operator==(const Array<T>& rhs) noexcept;
+		//std vector-like functions
+		size_t size()  const noexcept;
+		bool empty() const noexcept;
 
-		int StartIndex() const noexcept;
-		size_t Length() const noexcept;
+		void resize(size_t newSize);
+		void clear();
 
-		void StartIndex(const int& start_index) noexcept;
-		void Length(const size_t& length) noexcept(false);
+		/* iterators ---------------------------------------------------------- */
+		iterator       begin() noexcept;
+		const_iterator begin() const noexcept;
+		const_iterator cbegin() const noexcept;
+
+		iterator       end()   noexcept;
+		const_iterator end()   const noexcept;
+		const_iterator cend()  const noexcept;
+
+		/* data access -------------------------------------------------------- */
+		T* data() noexcept { return storage_; }
+		const T* data() const noexcept { return storage_; }
 
 	private:
-		T* storage_;
-		size_t length_;
-		int start_index_;
+		T* storage_{ nullptr };
+		size_t length_{ 0 };
+
+		void Length(const size_t& length);
+		T* AllocateArray(const size_t& length);
 	};
-
-
-	template <class T>
-	Array<T>::~Array()
-	{
-	}
-
-	template <class T>
-	Array<T>::Array(size_t length, int start_index) noexcept(false)
-	{
-	}
-
-	template <class T>
-	Array<T>::Array(const T* storage, const size_t& length, const int& start_index) noexcept(false)
-	{
-	}
-
-	template <class T>
-	Array<T>::Array(const Array& copy) noexcept(false)
-	{
-	}
-
-	template <class T>
-	Array<T>& Array<T>::operator=(const Array& rhs) noexcept(false)
-	{
-		return *this;
-	}
-
-	template <class T>
-	Array<T>::Array(Array&& copy) noexcept
-	{
-	}
-
-	template <class T>
-	Array<T>& Array<T>::operator=(Array&& rhs) noexcept
-	{
-		return *this;
-	}
-
-	template <class T>
-	T& Array<T>::operator[](const int& index) noexcept(false)
-	{
-		return storage_[0];
-	}
-
-	template <class T>
-	T Array<T>::operator[](const int& index) const noexcept(false)
-	{
-		return storage_[0];
-	}
-
-	template <class T>
-	Array<T>::operator bool() const noexcept
-	{
-		return false;
-	}
-
-	template <class T>
-	bool Array<T>::operator==(const Array<T>& rhs) noexcept
-	{
-		return false;
-	}
-
-	template <class T>
-	int Array<T>::StartIndex() const noexcept
-	{
-		return 0;
-	}
-
-	template <class T>
-	size_t Array<T>::Length() const noexcept
-	{
-		return 0;
-	}
-
-	template <class T>
-	void Array<T>::StartIndex(const int& start_index) noexcept
-	{
-	}
-
-	template <class T>
-	void Array<T>::Length(const size_t& length) noexcept(false)
-	{
-	}
 }
 
 #endif

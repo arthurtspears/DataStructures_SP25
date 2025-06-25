@@ -9,25 +9,34 @@ namespace data_structures
 	class BstNode final : public PairNode<K, V>
 	{
 	public:
-		BstNode(const K& key, const V& value, BstNode<K, V>* left = nullptr, BstNode<K, V>* right = nullptr);
-		~BstNode() = default;
-		BstNode(const BstNode& copy) noexcept;
-		BstNode& operator=(const BstNode& rhs) noexcept;
-		BstNode(BstNode&& copy) noexcept;
-		BstNode& operator=(BstNode&& rhs) noexcept;
+		BstNode(const K& key, const V& value, BstNode* left = nullptr, BstNode* right = nullptr);
+
+		virtual ~BstNode() override = default;
+
+		BstNode(const BstNode& copy) noexcept = default;
+		BstNode& operator=(const BstNode& rhs) noexcept = default;
+		BstNode(BstNode&& copy) noexcept = default;
+		BstNode& operator=(BstNode&& rhs) noexcept = default;
+
 		BstNode*& Left() noexcept;
 		BstNode*& Right() noexcept;
-		BstNode* Left() const noexcept;
-		BstNode* Right() const noexcept;
-		void Left(BstNode* const left) noexcept;
-		void Right(BstNode* const right) noexcept;
+		BstNode*& Parent() noexcept;
+
+		BstNode* const& Left() const noexcept;
+		BstNode* const& Right() const noexcept;
+		BstNode* const& Parent() const noexcept;
+
+		void Left(BstNode* left) noexcept;
+		void Right(BstNode* right) noexcept;
+		void Parent(BstNode* parent) noexcept;
+
+		using KeyType = K;
+		using ValueType = V;
 
 	private:
-		BstNode* left_ = nullptr;
-		BstNode* right_ = nullptr;
-	};
-
-
-	
+		BstNode* left_{ nullptr };
+		BstNode* right_{ nullptr };
+		BstNode* parent_{ nullptr };
+	};	
 }
 #endif

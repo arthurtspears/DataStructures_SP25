@@ -1,51 +1,77 @@
 #ifndef HASH_MAP_H
 #define HASH_MAP_H
 
-#include <vector>
-#include <list>
 #include <functional>
+#include <utility>
 #include "adt_exception.hpp"
-using std::list;
-using std::vector;
+#include "linked_list.hpp"
+#include "array.hpp"
+#include "pair.hpp"
+
 using std::function;
 using std::move;
-using std::pair;
 
 namespace data_structures
 {
-
-
-	template <class K, class V>
+	template <class TKey, class TValue>
 	class HashMap final
 	{
 	public:
-		HashMap() = delete;
-		HashMap(const size_t& table_size, const function<int(K key)>& hash_function);
 
-		HashMap(const HashMap& copy);
-		auto operator=(const HashMap& rhs) -> HashMap&;
+		using KVPair = data_structures::Pair<TKey, TValue>;
 
-		HashMap(HashMap&& copy) noexcept;
-		auto operator=(HashMap&& rhs) noexcept -> HashMap&;
+		explicit HashMap(size_t tableSize, const function<size_t(const TKey&)>& hashFn);
 
+		HashMap(const HashMap& rhs);              // deep copy
+		HashMap& operator=(const HashMap& rhs);   // copy-assign
+		HashMap(HashMap&& rhs) noexcept;          // move
+		HashMap& operator=(HashMap&& rhs) noexcept;
 		~HashMap() = default;
 
-		auto Insert(const K& key, const V& value) -> void;
-		auto HashFunction(const function<int(const K& key)>& hash) -> void;
-		auto operator [](const K& key) -> V&;
-		auto operator [](const K& key) const -> V;
-		auto Remove(const K& key) -> void;
-		auto Traverse(const function<void(const K& key, const V& value)>& visit) const -> void;
-		auto Contains(const K& key) -> bool;
-		auto Count() const -> size_t;
+		// capacity helpers
+		void EnsureCapacity(size_t minBuckets, bool trim = false);
+		void TrimExcess();
 
-		auto GetOrAdd(const K& key, const function<V()>& create_function) -> V&;
+		// insertion / update
+		bool TryAdd(const TKey& key, const TValue& value); // false if key exists
+		void Put(const TKey& key, const TValue& value);    // add or overwrite
 
+		TValue& operator[](const TKey& key);               // add default if absent
+
+		// retrieval
+		bool TryGetValue(const TKey& key, TValue& outVal) const;
+		const TValue& operator[](const TKey& key) const;   // throws if missing
+
+		// removal
+		bool Remove(const TKey& key, TValue* removed = nullptr);
+
+		// queries
+		bool ContainsKey(const TKey& key) const;
+		bool ContainsValue(const TValue& v) const;
+		size_t Count() const noexcept;
+
+		// misc
+		void Clear();
+		size_t TableSize() const noexcept;
+
+		// iteration
+		auto begin();
+		auto end();
+		auto begin() const;
+		auto end() const;
+
+		// views
+		Array<TKey> Keys() const;
+		Array<TValue> Values() const;
 
 	private:
-		vector<list<pair<K, V>>> buckets_ {};
-		function<int(K key)> hash_function_ {nullptr};
+		Array<LinkedList<KVPair>> buckets_;
+		function<size_t(const TKey&)> hash_function_{};
+		size_t count_{ 0 };
 
+		size_t BucketIndex(const TKey& key) const noexcept;
+		KVPair* FindPair(const TKey& key);
+		const KVPair* FindPair(const TKey& key) const;
 	};
 
 

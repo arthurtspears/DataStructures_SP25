@@ -1,56 +1,64 @@
 #ifndef AVL_TREE_HPP
 #define AVL_TREE_HPP
-#include "avl_node.hpp"
-#include "adt_exception.hpp"
-#include "itree.hpp"
-#include "list_queue.hpp"
 
+#include "avl_node.hpp"
+#include <functional>
+
+#include "bst_base.hpp"
+#include "bst_iterator.hpp"
 
 namespace data_structures
 {
-	template <class K, class V>
-	class AvlTree final : public ITree<K, V>
-	{
-	public:
-		AvlTree() = default;
-		~AvlTree();
-		AvlTree(const AvlTree& copy) noexcept(false);
-		AvlTree& operator=(const AvlTree& rhs) noexcept(false);
-		AvlTree(AvlTree&& copy) noexcept(false);
-		auto operator=(AvlTree&& rhs) noexcept(false) -> AvlTree&;
-		auto VisitFunction(const std::function<void(const PairNode<K, V>* node)>& visit) noexcept -> void override;
-		auto Clear() noexcept -> void override;
-		auto Empty() const noexcept -> bool override;
-		auto InOrder() const noexcept -> void override;
-		auto PreOrder() const noexcept -> void override;
-		auto PostOrder() const noexcept -> void override;
-		auto BreadthFirst() const noexcept -> void override;
-		auto Insert(const K& key, const V& value) noexcept(false) -> void override;
-		auto Remove(const K& key) noexcept(false) -> void override;
-		auto Search(const K& key) const noexcept(false) -> V override;
-		auto Search(const K& key) noexcept(false) -> V& override;
+    template <class K, class V>
+    class AvlTree final : public BinarySearchTreeBase<K, V, AvlTree<K, V>, AvlNode<K, V>>
+    {
+        using Node = AvlNode<K, V>;
+        using Base = BinarySearchTreeBase<K, V, AvlTree, AvlNode<K, V>>;
 
-	private:
-		AvlNode<K, V>* root_{ nullptr };
-		std::function<void(const AvlNode<K, V>* const node)> visit_{ nullptr };
+    public:
+        using iterator = BstIterator<K, V, false, AvlNode<K, V>>;
+        using const_iterator = BstIterator<K, V, true, AvlNode<K, V>>;
 
-		auto InOrder(const AvlNode<K, V>* node) const noexcept -> void;
-		auto PreOrder(const AvlNode<K, V>* node) const noexcept -> void;
-		auto PostOrder(const AvlNode<K, V>* node) const noexcept -> void;
+        AvlTree() = default;
+        ~AvlTree() override;
+
+        AvlTree(const AvlTree& copy);
+        AvlTree& operator=(const AvlTree& rhs);
+        AvlTree(AvlTree&& copy) noexcept;
+        AvlTree& operator=(AvlTree&& rhs) noexcept;
+
+        // Indexer
+        V& operator[](const K& key);
+
+        // Curiously Recurring Template Pattern (CRTP) override points
+        std::pair<V&, bool> InsertImpl(const K& key, const V& value);
+        void RemoveImpl(const K& key);
+
+        // Iterators - forward only
+        iterator begin() noexcept;
+        iterator end() noexcept;
+
+        const_iterator begin() const noexcept;
+        const_iterator end() const noexcept;
+
+        const_iterator cbegin() const noexcept;
+        const_iterator cend() const noexcept;
 
 
-		static auto CreateNode(const K& key, const V& value) noexcept(false) -> AvlNode<K, V>*;
+    private:
+        // Recursive operations
+        std::pair<V&, bool> Insert(Node*& node, const K& key, const V& value, bool& taller);
+        Node* Remove(Node* node, const K& key, bool& shorter);
 
-		auto Insert(AvlNode<K, V>*& current, const K& key, const V& value, bool& taller) -> void;
-		auto LeftBalance(AvlNode<K, V>*& current, bool& taller) -> void;
-		auto RightBalance(AvlNode<K, V>*& current, bool& taller) -> void;
-		auto RotateLeft(AvlNode<K, V>* current) -> AvlNode<K, V>*;
-		auto RotateRight(AvlNode<K, V>* current) -> AvlNode<K, V>*;
+        // Rotations and balancing
+        void LeftBalance(Node*& node, bool& taller);
+        void RightBalance(Node*& node, bool& taller);
+        void RemoveLeftBalance(Node*& node, bool& shorter);
+        void RemoveRightBalance(Node*& node, bool& shorter);
 
-		auto RemoveFromTree(AvlNode<K, V>*& current, const K& key, bool& shorter) -> void;
-		auto RemoveLeftBalance(AvlNode<K, V>*& current, bool& shorter) -> void;
-		auto RemoveRightBalance(AvlNode<K, V>*& current, bool& shorter) -> void;
-	};
+        Node* RotateLeft(Node* node);
+        Node* RotateRight(Node* node);
+    };
 
 	
 }

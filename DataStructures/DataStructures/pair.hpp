@@ -1,28 +1,29 @@
 #ifndef PAIR_HPP
 #define PAIR_HPP
-#include "adt_exception.hpp"
+
+#include <utility>
 
 namespace data_structures
 {
-	template <class F, class S>
+	template <class TFirst, class TSecond>
 	class Pair
 	{
 	public:
-		Pair() = delete;
-		Pair(const F& first, const S& second) noexcept(false);
-		Pair(const Pair& copy) noexcept(false);
-		Pair& operator=(const Pair& copy) noexcept(false);
-		Pair(Pair&& copy) noexcept;
-		Pair& operator=(Pair&& copy) noexcept;
-		F First() const noexcept;
-		S Second() const noexcept;
-		void First(const F& first) noexcept;
-		void Second(const S& second) noexcept;
-		~Pair();
+		Pair() = default;
+		Pair(TFirst first, TSecond second);
+
+		TFirst& First() noexcept;
+		TSecond& Second() noexcept;
+
+		const TFirst& First() const noexcept;
+		const TSecond& Second() const noexcept;
+
+		void First(const TFirst& first) noexcept;
+		void Second(const TSecond& second) noexcept;
 
 	private:
-		F* first_;
-		S* second_;
+		TFirst first_{ };
+		TSecond second_{ };
 	};
 
 	

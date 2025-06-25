@@ -1,13 +1,11 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
-#include <list>
-#include <iterator>
-#include <queue>
-#include <stack>
 #include <functional>
 #include "vertex.hpp"
 #include "adt_exception.hpp"
+#include "list_queue.hpp"
+#include "list_stack.hpp"
 
 namespace data_structures
 {
@@ -15,37 +13,69 @@ namespace data_structures
 	class Graph final
 	{
 	public:
+		using iterator = typename LinkedList<Vertex<V, E>>::iterator;
+		using const_iterator = typename LinkedList<Vertex<V, E>>::const_iterator;
+
 		Graph() = default;
 		~Graph() = default;
 
 		Graph(const Graph& other);
-		Graph<V, E>& operator=(const Graph& rhs);
-		Graph(Graph&& other) noexcept;
-		Graph<V, E>& operator=(Graph&& rhs) noexcept;
+		Graph& operator=(const Graph& rhs);
 
-		void ResetVertices() noexcept;
+		Graph(Graph&& other) noexcept;
+		Graph& operator=(Graph&& rhs) noexcept;
+
+		void ResetVertices() noexcept;							//Sets 'processed' in Vertex to false.
+
 		void InsertVertex(const V& data);
 		void RemoveVertex(const V& data);
+
 		void InsertArc(const V& from, const V& to, const E& data, const int& weight);
 		void RemoveArc(const V& from, const V& to, const E& data);
 
-		void DepthFirst(const V& start_data) noexcept(false);
-		void BreadthFirst(const V& start_data) noexcept(false);
+		void DepthFirst(const V& start_data);
+		void BreadthFirst(const V& start_data);
 
 		Vertex<V, E>* GetVertex(const V& data);
 
-		bool Empty() const noexcept;
-		size_t Vertices() const noexcept;
-		typename list<Vertex<V, E>>::iterator MapBeginIterator();
-		typename list<Vertex<V, E>>::iterator MapEndIterator();
+		LinkedList<Vertex<V, E>>& Vertices();
+		const LinkedList<Vertex<V, E>>& Vertices() const;
+
+		bool IsEmpty() const noexcept;
+
+		size_t NumVertices() const noexcept;
+
+		/* ----------------------------------------------------------------------- */
+		/*  Forward iteration                                                     */
+		/* ----------------------------------------------------------------------- */
+		iterator       begin();
+		iterator       end();
+
+		const_iterator begin() const;
+		const_iterator end()   const;
+
+		const_iterator cbegin() const;
+		const_iterator cend()   const;
+
+		/* ----------------------------------------------------------------------- */
+		/*  Reverse iteration (optional)                                           */
+		/* ----------------------------------------------------------------------- */
+		iterator       rbegin();
+		iterator       rend();
+
+		const_iterator rbegin() const;
+		const_iterator rend()   const;
+
+		const_iterator crbegin() const;
+		const_iterator crend()   const;
+
 		void VisitFunction(const std::function<void(const V& data)>& visit);
 
 	private:
-		std::function<void(const V& data)> visit_ {nullptr};
-		std::list<Vertex<V, E>> vertices_ {};
+		std::function<void(const V& data)> visit_{ nullptr };
+		LinkedList<Vertex<V, E>> vertices_{};
 	};
 
-	
 }
 
 #endif
