@@ -6,12 +6,13 @@
 
 namespace data_structures
 {
-	template <class T>
+	template <typename  T>
 	class ArrayQueue final : public IQueue<T>
 	{
 	public:
 		ArrayQueue() = default;
 		explicit ArrayQueue(size_t length);
+
 		ArrayQueue(const ArrayQueue& copy);
 		ArrayQueue& operator=(const ArrayQueue& rhs);
 		ArrayQueue(ArrayQueue&& copy) noexcept;
@@ -20,17 +21,21 @@ namespace data_structures
 		void Enqueue(T data) override;
 		T Dequeue() override;
 		T& Front() override;
-		bool Full() const noexcept;
+		bool IsFull() const noexcept;
 		void Clear() noexcept override;
-		
-		~ArrayQueue() = default;
+
+		~ArrayQueue() override = default;
 		size_t Size() const noexcept override;
-		bool Empty() const noexcept override;
+		bool IsEmpty() const noexcept override;
+
+		size_t QueueLength() const noexcept;
+
 	private:
 		Array<T> queue_;
-
+		size_t front_{ 0 };
+		size_t back_{ 0 };
+		size_t count_{ 0 };
 	};
-
 	
 }
 #endif // array_queue_HPP

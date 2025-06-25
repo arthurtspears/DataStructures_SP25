@@ -1,19 +1,17 @@
 #include "pch.h"
-#include "array.hpp"
-
 #include "CppUnitTest.h"
-
+#include "array.hpp"
 #include "crt_check_memory.hpp"
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace data_structures;
 
 namespace data_structures_tests
 {
-	TEST_CLASS(ArrayTest)
-	{
-	public:
+    TEST_CLASS(ArrayTest)
+    {
+    public:
 
         // Helper factories for creating test arrays.
         static Array<size_t> ArrayFactory()
@@ -55,7 +53,7 @@ namespace data_structures_tests
             const CrtCheckMemory check;
             Array<int> array;
             Assert::IsFalse(static_cast<bool>(array));
-            Assert::AreEqual(static_cast<size_t>(0), array.Length());
+            Assert::AreEqual(static_cast<size_t>(0), array.size());
         }
 
         // Test that a constructor with a length initializes the array with default values.
@@ -64,8 +62,8 @@ namespace data_structures_tests
             const CrtCheckMemory check;
             Array<int> array(5);
             Assert::IsTrue(static_cast<bool>(array));
-            Assert::AreEqual(static_cast<size_t>(5), array.Length());
-            for (size_t i = 0; i < array.Length(); ++i)
+            Assert::AreEqual(static_cast<size_t>(5), array.size());
+            for (size_t i = 0; i < array.size(); ++i)
             {
                 // For ints, default initialization should give 0.
                 Assert::AreEqual(0, array[i]);
@@ -78,7 +76,7 @@ namespace data_structures_tests
             const CrtCheckMemory check;
             int data[5] = { 10, 20, 30, 40, 50 };
             Array<int> array(data, 5);
-            Assert::AreEqual(static_cast<size_t>(5), array.Length());
+            Assert::AreEqual(static_cast<size_t>(5), array.size());
             for (size_t i = 0; i < 5; ++i)
             {
                 Assert::AreEqual(data[i], array[i]);
@@ -119,7 +117,7 @@ namespace data_structures_tests
             const CrtCheckMemory check;
             auto temp = ArrayFactory();
             auto moved = std::move(temp);
-            Assert::AreEqual(10ull, moved.Length());
+            Assert::AreEqual(10ull, moved.size());
             // The moved-from array should now be in a safe empty state.
         }
 
@@ -130,7 +128,7 @@ namespace data_structures_tests
             auto array1 = ArrayFactory();
             auto array2 = ArrayFactory(10);
             array2 = std::move(array1);
-            Assert::AreEqual(10ull, array2.Length());
+            Assert::AreEqual(10ull, array2.size());
             // Since array1 was moved-from, its operator bool should return false.
             Assert::IsFalse(static_cast<bool>(array1));
         }
@@ -163,23 +161,6 @@ namespace data_structures_tests
             Assert::ExpectException<AdtException>(should_throw);
         }
 
-        // --- Start Index Tests ---
-
-        // Test that the start index correctly translates subscript indices.
-        TEST_METHOD(StartIndex_ShouldTranslateArray)
-        {
-            const CrtCheckMemory check;
-            Array<int> array(10, -5);
-            for (int i = -5; i < 5; ++i)
-            {
-                array[i] = i;
-            }
-            for (int i = -5; i < 5; ++i)
-            {
-                Assert::AreEqual(i, array[i]);
-            }
-        }
-
         // --- Equality Operator Tests ---
 
         // Verify that identical arrays are considered equal.
@@ -210,21 +191,6 @@ namespace data_structures_tests
             Assert::IsFalse(array1 == array2);
         }
 
-        // Verify that arrays with different start indices are not considered equal.
-        TEST_METHOD(EqualityOperator_ShouldReturnFalseForDifferentStartIndices)
-        {
-            const CrtCheckMemory check;
-            Array<int> array1(5, 0);
-            Array<int> array2(5, 2);
-            // Initialize arrays with the same logical data.
-            for (int i = 0; i < 5; ++i)
-            {
-                array1[i] = i;
-                array2[i + 2] = i;
-            }
-            Assert::IsFalse(array1 == array2);
-        }
-
         // --- Resizing Tests ---
 
         // Test reducing the length preserves the initial segment of data.
@@ -232,8 +198,8 @@ namespace data_structures_tests
         {
             const CrtCheckMemory check;
             auto array = ArrayFactory(10);
-            array.Length(5);
-            Assert::AreEqual(5ull, array.Length());
+            array.resize(5);
+            Assert::AreEqual(5ull, array.size());
             for (size_t i = 0; i < 5; ++i)
             {
                 Assert::AreEqual(i, array[i]);
@@ -245,8 +211,8 @@ namespace data_structures_tests
         {
             const CrtCheckMemory check;
             auto array = ArrayFactory(5);
-            array.Length(10);
-            Assert::AreEqual(10ull, array.Length());
+            array.resize(10);
+            Assert::AreEqual(10ull, array.size());
             for (auto i = 0ull; i < 5; ++i)
             {
                 Assert::AreEqual(i, array[i]);
@@ -275,5 +241,5 @@ namespace data_structures_tests
             Array<int> array;
             Assert::IsFalse(static_cast<bool>(array));
         }
-	};
+    };
 }

@@ -12,23 +12,23 @@ namespace data_structures
 	{
 	public:
 		ListStack() = default;
+
 		ListStack(const ListStack& copy);
 		ListStack& operator=(const ListStack& rhs);
 		ListStack(ListStack&& copy) noexcept;
 		ListStack& operator=(ListStack&& rhs) noexcept;
-		~ListStack() = default;
+		~ListStack() override;
 
 		T Pop() override;
-		T Peek() override;
+		T Peek() const override;
 		void Push(T data) override;
 		void Clear() noexcept override;
-		bool Empty() const noexcept override;
+		bool IsEmpty() const noexcept override;
 		size_t Size() const noexcept override;
+
 	private:
 		LinkedList<T> stack_;
-
 	};
-
 
 }
 #endif

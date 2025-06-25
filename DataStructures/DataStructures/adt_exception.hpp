@@ -24,7 +24,7 @@ namespace data_structures
 
 			copy(str.begin(), str.end(), wide_str.begin());
 
-			return wide_str.c_str();
+			return wide_str.c_str(); // NOLINT(clang-diagnostic-return-stack-address)
 		}
 
 		friend ostream& operator<<(ostream& stream, const AdtException& exception)

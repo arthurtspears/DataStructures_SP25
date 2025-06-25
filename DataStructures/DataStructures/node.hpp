@@ -10,24 +10,31 @@ namespace data_structures
 	{
 	public:
 		explicit Node() = delete;
-		Node(const Node& copy);
-		explicit Node(const T& data);
 
-		Node<T>& operator=(const Node& copy);
+		explicit Node(const T& copy); //copy-in
+		explicit Node(T&& node); //move-in
 
-		Node(Node&& copy) noexcept;
-		Node<T>& operator=(Node&& copy) noexcept;
+		Node(const Node&);
+		Node& operator=(const Node&);
+
+		Node(Node&&) noexcept;
+		Node& operator=(Node&&) noexcept;
 
 		virtual ~Node() = default;
 
 		T& Value() noexcept;
-		T Value() const noexcept;
+		const T& Value() const noexcept;
+
 		void Value(const T& data);
+		void Value(T&& data);
+
+		bool operator==(const Node& rhs) const noexcept;
+		bool operator!=(const Node& rhs) const noexcept;
+
 	private:
-		T value_;
+		T value_{};
 	};
 
-	
 
 }
 #endif

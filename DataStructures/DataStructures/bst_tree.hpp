@@ -1,56 +1,55 @@
 #ifndef BST_TREE_HPP
 #define BST_TREE_HPP
 
+#include "bst_base.hpp"
 #include "bst_node.hpp"
-#include "itree.hpp"
+#include "bst_iterator.hpp"
 #include "list_queue.hpp"
 #include <functional>
+#include <utility>
 
 namespace data_structures
 {
 	template <class K, class V>
-	class BstTree final : ITree<K, V>
+	class BstTree final : public BinarySearchTreeBase<K, V, BstTree<K, V>, BstNode<K, V>>
 	{
-	public:
-		BstTree() = default;
-		~BstTree();
-		BstTree<K, V>(const BstTree<K, V>& copy) noexcept(false);
-		auto operator=(const BstTree<K, V>& rhs) noexcept(false)->BstTree<K, V> &;
-		BstTree<K, V>(BstTree<K, V>&& copy) noexcept;
-		auto operator=(BstTree<K, V>&& rhs) noexcept->BstTree<K, V> &;
-		auto VisitFunction(const std::function<void(const PairNode<K, V>* node)>& visit) noexcept -> void override;
-		auto Clear() noexcept -> void override;
-		auto Height() noexcept->size_t;
-		auto InOrder() const noexcept -> void override;
-		auto PreOrder() const noexcept -> void override;
-		auto Empty() const noexcept -> bool override;
-		auto PostOrder() const noexcept -> void override;
-		auto BreadthFirst() const noexcept -> void override;
-		auto Insert(const K& key, const V& value) noexcept(false) -> void override;
-		auto Remove(const K& key) noexcept(false) -> void override;
-		auto Search(const K& key) const noexcept(false)->V override;
-		auto Search(const K& key) noexcept(false)->V & override;
+		using Node = BstNode<K, V>;
+		using Base = BinarySearchTreeBase<K, V, BstTree, BstNode<K, V>>;
 
-		bool operator==(const BstTree<K, V>& rhs) const noexcept;
+	public:
+		using iterator = BstIterator<K, V, false>;
+		using const_iterator = BstIterator<K, V, true>;
+
+		BstTree() = default;
+		~BstTree() override;
+
+		BstTree(const BstTree& copy);
+		BstTree& operator=(const BstTree& rhs);
+		BstTree(BstTree&& copy) noexcept;
+		BstTree& operator=(BstTree&& rhs) noexcept;
+
+		std::pair<V&, bool> InsertImpl(const K& key, const V& value);
+		void RemoveImpl(const K& key);
+
+		// Indexer
+		V& operator[](const K& key);
+
+		// Iterators - forward only
+		iterator begin() noexcept;
+		iterator end() noexcept;
+
+		const_iterator begin() const noexcept;
+		const_iterator end() const noexcept;
+
+		const_iterator cbegin() const noexcept;
+		static const_iterator cend() noexcept;
 
 	private:
-		BstNode<K, V>* root_ = nullptr;
-		function<void(const BstNode<K, V>* const node)> visit_ = nullptr;
+		std::pair<V&, bool> Insert(Node*& cur, const K& key, const V& value, Node* parent);
+		void Remove(Node*& cur, const K& key);
 
-		auto Clear(BstNode<K, V>* node) noexcept -> void;
-		auto Height(BstNode<K, V>* node) noexcept -> int;
-		auto InOrder(BstNode<K, V>* node) const noexcept -> void;
-		auto PreOrder(BstNode<K, V>* node) const noexcept -> void;
-		auto PostOrder(BstNode<K, V>* node) const noexcept -> void;
-		auto BreadthFirst(BstNode<K, V>* node) const noexcept -> void;
-		auto Insert(BstNode<K, V>*& root, const K& key, const V& value) noexcept(false) -> void;
-		auto DeleteFromTree(BstNode<K, V>*& parent) noexcept -> void;
-		auto Copy(BstNode<K, V>* node) noexcept(false) -> void;
-		auto Search(BstNode<K, V>* root, const K& key) const noexcept(false)->V;
-		auto Search(BstNode<K, V>* root, const K& key) noexcept(false)->V &;
-	};
-
-	
+		V& Lookup(Node* cur, const K& key) const;
+		V* LookupPtr(Node* cur, const K& key) const;
+	};	
 }
-
 #endif

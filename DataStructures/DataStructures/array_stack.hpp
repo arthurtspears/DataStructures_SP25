@@ -7,31 +7,33 @@
 
 namespace data_structures
 {
-
-	template <class T>
+	template <typename T>
 	class ArrayStack final : public IStack<T>
 	{
 	public:
-		ArrayStack() = default;
-		explicit ArrayStack(const size_t& max_size);
+		ArrayStack();
+		explicit ArrayStack(size_t max_size);
+		~ArrayStack() override = default;
+
 		ArrayStack(const ArrayStack& copy);
 		ArrayStack& operator=(const ArrayStack& rhs);
 		ArrayStack(ArrayStack&& copy) noexcept;
 		ArrayStack& operator=(ArrayStack&& rhs) noexcept;
-		~ArrayStack() = default;
 
 		T Pop() override;
-		T Peek() override;
+		T Peek() const override;
 		void Push(T data) override;
-		bool Full() const noexcept;
+		bool IsFull() const noexcept;
 		void Clear() noexcept override;
-		bool Empty() const noexcept override;
+		bool IsEmpty() const noexcept override;
 		size_t Size() const noexcept override;
+		size_t Capacity() const noexcept;
+
 	private:
+		size_t size_;
 		Array<T> stack_;
-
+		size_t top_{ 0 };
 	};
-
 	
 }
 #endif // array_stack_HPP

@@ -21,7 +21,7 @@
     <ClCompile Include="array_queue_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="array_stack.cpp">
+    <ClCompile Include="array_stack_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="array_test.cpp">
@@ -45,25 +45,10 @@
     <ClCompile Include="pair_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="arc_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="avl_node_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="avl_tree_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="backward_iterator_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bst_node_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bst_tree_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="forward_iterator_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="graph_test.cpp">
@@ -76,9 +61,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="node_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pair_node_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="row_test.cpp">

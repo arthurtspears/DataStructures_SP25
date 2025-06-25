@@ -39,16 +39,10 @@
     <ClInclude Include="avl_tree.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="backward_iterator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="bst_node.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bst_tree.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="forward_iterator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="graph.hpp">
@@ -58,9 +52,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="iarray2d.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="iiterator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="iqueue.hpp">
@@ -102,7 +93,13 @@
     <ClInclude Include="vertex.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="irow.hpp">
+    <ClInclude Include="bst_base.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bst_iterator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="i_adt_iterator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
